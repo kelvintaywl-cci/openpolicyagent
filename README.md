@@ -55,3 +55,4 @@ $ docker image inspect openpolicyagent/opa:0.45.0-debug | jq '.[0].Config | with
 
 ## Conclusion
 
+You can check out the .circleci/config.yml file in this repository to see how to set up a CircleCI job using the `openpolicyagent/opa:0.45.0-debug` image.
