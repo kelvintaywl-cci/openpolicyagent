@@ -1,0 +1,32 @@
+version: 2.1
+
+jobs:
+  lint-policies:
+    parameters:
+      opa-version:
+        type: string
+        default: '0.45.0'
+    docker:
+      # Docker image for the OPA CLI is available
+      # https://www.openpolicyagent.org/docs/latest/#running-opa
+      # Also see https://hub.docker.com/r/openpolicyagent/opa
+      - image: openpolicyagent/opa:<< parameters.opa-version >>-debug
+        # *-debug images from opa are distroless,
+        # but offer shell at sh
+        entrypoint: sh
+    steps:
+      - checkout
+      - run:
+          name: Lint policies
+          command: |
+            for pol in policies/*.rego; do
+              # https://www.openpolicyagent.org/docs/latest/cli/#opa-check
+              # NOTE: opa binary is located in /opa
+              echo "linting ${pol}..."
+              /opa check $pol
+            done
+
+workflows:
+  build:
+    jobs:
+      - lint-policies
