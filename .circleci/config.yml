@@ -16,6 +16,7 @@ jobs:
         entrypoint: sh
     steps:
       - checkout
+      - run: /opa version
       - run:
           name: Lint policies
           command: |
