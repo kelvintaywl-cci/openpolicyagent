@@ -33,6 +33,7 @@ jobs:
       - image: circleci/circleci-cli:latest
     steps:
       - checkout
+      - run: circleci setup --no-prompt --token $CIRCLE_TOKEN
       - run: circleci policy test ./policies --verbose
 
 workflows:
