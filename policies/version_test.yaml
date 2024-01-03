@@ -1,0 +1,34 @@
+# Top level tests must have keys prefixed with `test_`
+test_version_check:
+  # Create the input snippet that will be run against the policy. In the context of config policies, the input corresponds
+  # to CircleCI's config.yml
+  input:
+    version: 2.1
+  # Specify the decision we expect to get from the policy. Fields we expect to be empty can be omitted.
+  decision: &root # optionally you can use a yaml anchor to reuse this decision as a base in subcases below.
+    status: PASS
+    enabled_rules: [check_version]
+
+  # It is totally valid to write more tests at the top level with keys prefixed with `test_`, however it is often practical
+  # to create subcases hierarchically using the cases field.
+  cases: # subcases do not need to begin with `test_`
+    absent_version:
+      # the subcase input will be *merged* into the parent input
+      input:
+        version: null
+      decision:
+        <<: *root
+        status: HARD_FAIL
+        hard_failures:
+          - rule: check_version
+            reason: version must be defined
+
+    version_wrong_type:
+      input:
+        version: two
+      decision:
+        <<: *root
+        status: HARD_FAIL
+        hard_failures:
+          - rule: check_version
+            reason: version must be a number
