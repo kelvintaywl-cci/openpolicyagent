@@ -28,6 +28,8 @@ jobs:
             done
   test-policies:
     docker:
+      # https://hub.docker.com/r/circleci/circleci-cli
+      # also see: https://github.com/circleci-public/circleci-cli?tab=readme-ov-file#docker
       - image: circleci/circleci-cli:latest
     steps:
       - checkout
