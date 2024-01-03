@@ -26,8 +26,15 @@ jobs:
               echo "linting ${pol}..."
               /opa check $pol
             done
+  test-policies:
+    docker:
+      - image: circleci/circleci-cli:latest
+    steps:
+      - checkout
+      - run: circleci policy test ./policies --verbose
 
 workflows:
   build:
     jobs:
-      - lint-policies
+      # - lint-policies
+      - test-policies
